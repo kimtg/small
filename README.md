@@ -5,7 +5,7 @@ Small programs
 
 # License
 
-   Copyright 2014 KIM Taegyoon
+   Copyright 2013-2014 KIM Taegyoon
 
 
    Licensed under the Apache License, Version 2.0 (the "License");
