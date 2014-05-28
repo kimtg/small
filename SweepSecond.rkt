@@ -23,28 +23,32 @@
 (define brushSec (make-object brush% "crimson"))
 
 (define (drawHand dc center radius radians brush sideWeight)
+  (define cx (: center get-x))
+  (define cy (: center get-y))
   (define pTo (make-object point%
-                (+ (: center get-x) (* radius (sin radians)))
-                (+ (: center get-y) (* radius (cos radians)))))
+                (+ cx (* radius (sin radians)))
+                (+ cy (* radius (cos radians)))))
   (define pFrom (make-object point%
-                  (+ (: center get-x) (* (/ radius 8) (sin (- radians pi))))
-                  (+ (: center get-y) (* (/ radius 8) (cos (- radians pi))))))
+                  (+ cx (* (/ radius 8) (sin (- radians pi))))
+                  (+ cy (* (/ radius 8) (cos (- radians pi))))))
   (define pSide1 (make-object point%
-                   (+ (: center get-x) (* (/ radius 20) sideWeight (sin (- radians (/ pi 2)))))
-                   (+ (: center get-y) (* (/ radius 20) sideWeight (cos (- radians (/ pi 2)))))))
+                   (+ cx (* (/ radius 20) sideWeight (sin (- radians (/ pi 2)))))
+                   (+ cy (* (/ radius 20) sideWeight (cos (- radians (/ pi 2)))))))
   (define pSide2 (make-object point%
-                   (+ (: center get-x) (* (/ radius 20) sideWeight (sin (+ radians (/ pi 2)))))
-                   (+ (: center get-y) (* (/ radius 20) sideWeight (cos (+ radians (/ pi 2)))))))
+                   (+ cx (* (/ radius 20) sideWeight (sin (+ radians (/ pi 2)))))
+                   (+ cy (* (/ radius 20) sideWeight (cos (+ radians (/ pi 2)))))))
   (: dc set-brush brush)
   (: dc draw-polygon (list pFrom pSide1 pTo pSide2)))
 
 (define (drawTick dc center radius length radians pen)
+  (define cx (: center get-x))
+  (define cy (: center get-y))
   (define pTo (make-object point%
-                (+ (: center get-x) (* radius (sin radians)))
-                (+ (: center get-y) (* radius (cos radians)))))
+                (+ cx (* radius (sin radians)))
+                (+ cy (* radius (cos radians)))))
   (define pFrom (make-object point%
-                  (+ (: center get-x) (* radius (- 1 length) (sin radians)))
-                  (+ (: center get-y) (* radius (- 1 length) (cos radians)))))
+                  (+ cx (* radius (- 1 length) (sin radians)))
+                  (+ cy (* radius (- 1 length) (cos radians)))))
   (: dc set-pen pen)
   (: dc draw-lines (list pTo pFrom)))
 
@@ -71,16 +75,19 @@
   (define radHour (toRadians (/ (+ (remainder hour 12) (/ minute 60)) 12)))
   
   ; minute ticks
+  (define pen (make-object pen% "white" (/ r 120)))
   (for ([rad (range 0 (* pi 2) (/ (* pi 2) 60))])
-    (drawTick dc center (* r 0.95) 0.06 rad (make-object pen% "white" (/ r 120))))
+    (drawTick dc center (* r 0.95) 0.06 rad pen))
   
   ; hour ticks
+  (set! pen (make-object pen% "white" (/ r 60)))
   (for ([rad (range 0 (* pi 2) (/ (* pi 2) 12))])
-    (drawTick dc center (* r 0.95) 0.2 rad (make-object pen% "white" (/ r 60))))
+    (drawTick dc center (* r 0.95) 0.2 rad pen))
   
   ; 0 3 6 9 ticks
+  (set! pen (make-object pen% "white" (/ r 30)))
   (for ([rad (range 0 (* pi 2) (/ (* pi 2) 4))])
-    (drawTick dc center (* r 0.95) 0.2 rad (make-object pen% "white" (/ r 30))))
+    (drawTick dc center (* r 0.95) 0.2 rad pen))
   
   ; rim
   (: dc set-pen "white" (/ r 60) 'solid)
@@ -96,8 +103,7 @@
   ; center
   (define r2 (/ r 20))
   (: dc set-brush "white" 'solid)
-  (: dc draw-ellipse (- (: center get-x) r2) (- (: center get-y) r2) (* r2 2) (* r2 2))  
-  )
+  (: dc draw-ellipse (- (: center get-x) r2) (- (: center get-y) r2) (* r2 2) (* r2 2)))
 
 (define cv (new canvas%
                 [parent frame]
