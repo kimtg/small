@@ -1,7 +1,7 @@
 ; (C) 2014 KIM Taegyoon
 ; Postfix Calculator
 #lang racket
-(displayln "minicalc (C) 2014 KIM Taegyoon")
+(displayln "minicalc")
 (displayln "+ - * / ^ sqrt")
 (define stack '())
 (define-namespace-anchor anc)
