@@ -1,6 +1,8 @@
 ; (C) 2014 KIM Taegyoon
 ; Postfix Calculator
-#lang racket
+#lang racket/base
+(require racket/string racket/list)
+
 (displayln "minicalc")
 (displayln "+ - * / ^ sqrt")
 (define stack '())
