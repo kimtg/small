@@ -1,10 +1,11 @@
 ; (C) 2014 KIM Taegyoon
 ; Postfix Calculator
-#lang racket
-(require racket/gui/base)
-(displayln "minicalc
-The inexact result will be copied to the clipboard.
-+ - * / ^ sqrt")
+#lang racket/base
+(require racket/string racket/list racket/class racket/gui/base racket/format)
+
+(displayln "minicalc")
+(displayln "The inexact result will be copied to the clipboard.")
+(displayln "+ - * / ^ sqrt")
 (define stack '())
 (define-namespace-anchor anc)
 (define ns (namespace-anchor->namespace anc))
@@ -41,7 +42,7 @@ The inexact result will be copied to the clipboard.
     (unless (empty? stack)
       (define result (first stack))
       (define result2 (exact->inexact result))
-      (displayln (format "~a ~~ ~a" result result2))
+      (displayln (format "~a ~~= ~a" result result2))
       (send the-clipboard set-clipboard-string (~a result2) 0))
     (set! stack '())
     (loop)))
