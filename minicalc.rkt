@@ -1,9 +1,8 @@
 ; (C) 2014 KIM Taegyoon
-; Postfix Calculator
 #lang racket/base
 (require racket/string racket/list racket/class racket/gui/base racket/format)
 
-(displayln "minicalc")
+(displayln "MiniCalc - Postfix Calculator")
 (displayln "The inexact result will be copied to the clipboard.")
 (displayln "+ - * / ^ sqrt")
 (define stack '())
