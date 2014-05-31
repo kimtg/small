@@ -20,31 +20,32 @@
       #t))
 
 (let loop ()
-  (display "> ")
-  (define line (read-line))
-  (unless (eof-object? line)
-    (define code (read (open-input-string (~a "(" line ")"))))
-    (for ([token code])
-      (case token
-        [(+ - * /)
-         (when (check-num-op 2)
-           (set! stack (cons ((eval2 token) (second stack) (first stack)) (drop stack 2))))]
-        [(^)
-         (when (check-num-op 2)
-           (set! stack (cons (expt (second stack) (first stack)) (drop stack 2))))]
-        [(sqrt)
-         (when (check-num-op 1)
-           (set! stack (cons (sqrt (first stack)) (rest stack))))]
-        [else
-         (define t (eval2 token))
-         (when t
-           (set! stack (cons t stack)))]))
-    (unless (empty? stack)
-      (define result (first stack))
-      (define result2 result)
-      (when (number? result)
+  (with-handlers ([exn? (lambda (e) (displayln e) (loop))])
+    (display "> ")
+    (define line (read-line))
+    (unless (eof-object? line)
+      (define code (read (open-input-string (~a "(" line ")"))))
+      (for ([token code])
+        (case token
+          [(+ - * /)
+           (when (check-num-op 2)
+             (set! stack (cons ((eval2 token) (second stack) (first stack)) (drop stack 2))))]
+          [(^)
+           (when (check-num-op 2)
+             (set! stack (cons (expt (second stack) (first stack)) (drop stack 2))))]
+          [(sqrt)
+           (when (check-num-op 1)
+             (set! stack (cons (sqrt (first stack)) (rest stack))))]
+          [else
+           (define t (eval2 token))
+           (when t
+             (set! stack (cons t stack)))]))
+      (unless (empty? stack)
+        (define result (first stack))
+        (define result2 result)
+        (when (number? result)
           (set! result2 (exact->inexact result)))
-      (displayln (format "~a ~~= ~a" result result2))
-      (send the-clipboard set-clipboard-string (~a result2) 0))
-    (set! stack '())
-    (loop)))
+        (displayln (format "~a ~~= ~a" result result2))
+        (send the-clipboard set-clipboard-string (~a result2) 0))
+      (set! stack '())
+      (loop))))
