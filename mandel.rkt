@@ -20,7 +20,7 @@
 (define (mandelbrot width height)
   (define target (make-bitmap width height))
   (define dc (new bitmap-dc% [bitmap target]))
-  (for* ([x width] [y height])
+  (for* ([x (in-range width)] [y (in-range height)])
     (define real-x (- (* 3.0 (/ x width)) 2.25))
     (define real-y (- (* 2.5 (/ y height)) 1.25))
     (send dc set-pen (iter->color (iterations (make-rectangular real-x real-y) 0 0)) 1 'solid)
