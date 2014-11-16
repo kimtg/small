@@ -11,7 +11,7 @@
        [width 400]
        [height 400]))
 
-(define (paint canvas dc)
+(define (paint dc)
   (define-values (w h) (send dc get-size))
   (define r (/ (min w h) 2))
 
@@ -32,7 +32,7 @@
                 [paint-callback (lambda (canvas dc) (send dc clear))]))
 
 (define timer (new timer%
-                   [notify-callback (lambda () (paint canvas dc) (yield))]
+                   [notify-callback (lambda () (paint dc) (yield))]
                    [interval 500]))
 
 (send frame maximize #t)
