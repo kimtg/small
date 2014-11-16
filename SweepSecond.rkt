@@ -12,7 +12,7 @@
 
 (define frame
   (new (class frame%
-         (define/augment (on-close) (exit))
+         (define/augment (on-close) (send timer stop))
          (super-new))
        [label "SweepSecond"]
        [width 400]
