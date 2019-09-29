@@ -107,7 +107,7 @@
 (define interval (quotient 1000 60))
 
 (define timer (new timer%
-                   [notify-callback (lambda () (send cv refresh) (yield))]
+                   [notify-callback (lambda () (send cv refresh))]
                    [interval interval]))
 
 (send frame create-status-line)
